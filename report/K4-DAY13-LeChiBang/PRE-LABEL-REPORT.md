@@ -52,6 +52,11 @@ Ghi rõ helper tạo biến đổi có chủ đích từ prediction, không ph�
 - **Quyết định khi gặp lỗi batch vs lỗi một hộp**:
   - *Lỗi batch* (như `case-batch-z`): Phát hiện toàn bộ hộp cùng bị tụt hoặc bay lên so với mặt đường -> Dừng gán nhãn ngay lập tức, thông báo quản trị kiểm tra lại pipeline tiền xử lý và ma trận extrinsic; tuyệt đối không sửa tay từng hộp vì sẽ tạo ra nhãn sai lệch và tốn công vô ích.
   - *Lỗi một hộp* (như `case-one-box-z`): Do vùng bị che khuất (occlusion) hoặc mật độ điểm quá thưa ở xa -> Sử dụng chế độ xem đa góc (Top, Front, Side) trong CVAT/3D viewer và đối chiếu ảnh camera để ước lượng đáy cục bộ và điều chỉnh kích thước hộp.
+- **Phát hiện lỗi Pipeline thực tế trên 30 jobs Robotaxi**:
+  - Khi áp dụng kiểm tra hàng loạt tọa độ và kích thước của hơn 1000 hộp qua CVAT API trên 30 jobs thực tế được giao, em đã phát hiện ra 2 lỗi hệ thống (batch error) nghiêm trọng từ pipeline tạo pre-label:
+    1. **Lỗi gán ngược nhãn 100%**: Kích thước trung bình của nhãn `pedestrian` lên tới 1.66m x 4.05m (kích thước ô tô), trong khi nhãn `vehicles` lại là 0.68m x 0.74m (kích thước người).
+    2. **Lỗi Transform Z**: Tọa độ Bottom-Z trung bình của tất cả các hộp nằm ở mức 0.0m. Trong hệ tọa độ LiDAR, mặt đất thường nằm ở khoảng -1.73m. Suy ra toàn bộ các hộp đang treo lơ lửng cách mặt đất đúng một lượng delta.
+  - Dựa vào nguyên tắc xử lý lỗi batch trong bài, thay vì ngồi chỉnh tay trục Z cho hàng ngàn hộp (sẽ làm hỏng dữ liệu), em đã quyết định dừng thao tác sửa trục Z và chỉ hoàn thiện 15 jobs theo yêu cầu giảm tải, đồng thời ghi nhận bằng chứng này để thông báo cho LC kiểm tra lại transform pipeline.
 - **Điều còn chưa chắc chắn**: Do file `demo.pcd` là bản KITTI đã qua chuyển đổi loại bỏ reflectance thật (đặt RGB=0), em chưa đánh giá được mức độ suy giảm chất lượng nhận diện của mô hình đối với các vật thể có độ phản xạ thấp (như lốp xe, mặt đường ướt) so với khi có kênh intensity chuẩn.
 
 ## LC ghi nhận riêng
