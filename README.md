@@ -1,8 +1,7 @@
-# Ngày 13 — Robotaxi A: LiDAR 3D Object
+# K4-DAY13 - Bài Làm Cá Nhân - Lê Chí Bằng (2A202602215)
 
-Hôm nay bạn kiểm tra **pre-label từ PointPillars pretrained**, sửa cuboid 3D bằng bằng chứng và review bài của người khác. Bạn cần nhận ra khi nào lỗi nằm ở cả pipeline, khi nào chỉ một hộp cần chỉnh. Hộp model vẽ sẵn là gợi ý để bắt đầu, không phải đáp án.
-
-Bài gồm hai phần: **nhóm 3–4 người** thực hành trên một PCD được cấp, rồi **cá nhân** sửa và QC các job được giao. Mỗi người có **phiên 240 phút riêng**; không có mốc 14h–18h chung và không ghép một cặp A↔B cố định.
+Đây là repository lưu trữ kết quả thực hành cá nhân cho **Ngày 13 — Robotaxi A: LiDAR 3D Object**.
+Repository này chứa các báo cáo thí nghiệm mô hình PointPillars (A/B/C) và ghi nhận kết quả thực hành trên Portal/CVAT.
 
 | Tài liệu | Đọc khi nào |
 | --- | --- |
